@@ -13,53 +13,40 @@ double diferenciaDeContadorDeRendimiento(LARGE_INTEGER *a, LARGE_INTEGER *b)
   return (double)(a->QuadPart - b->QuadPart) / (double)freq.QuadPart;
 }
 
-void Mergelist(int a[],int st1,int end1,int st2,int end2){
-	int finalSt=st1;
-	int finalEnd=end2;
-	int indexC=1;
-	int result[finalEnd];
-	int i=0;
-	while((st1<=end1)&&(st2<=end2)){
-		if (a[st1]<a[st2]){
-			result[indexC]=a[st1];
-			st1=st1+1;
-		}else{
-			result[indexC]=a[st2];
-			st2=st2+1;	
-		}
-		indexC=indexC+1;
-	}
-	if(st1<=end1){
-		for(i=st1;i<end1;i++){
-			result[indexC]=a[i];
-			indexC=indexC+1;
-		}
-	}else{
-		for(i=st2;i<end2;i++){
-			result[indexC]=a[i];
-			indexC=indexC+1;
-		}
-	}
-	indexC=1;
-	for(i=finalSt;i<finalEnd;i++){
-		a[i]=result[indexC];
-		indexC=indexC+1;
-	}
+
+void quickSort(int a[],int izq,int der){
+	int i, j, x , aux; 
+	i = izq; 
+	j = der; 
+	x = a[ der ]; 
+    do{ 
+        while( (a[i] < x) && (j <= der) )
+        { 
+            i++;
+        } 
+ 
+        while( (x < a[j]) && (j > izq) )
+        { 
+            j--;
+        } 
+ 
+        if( i <= j )
+        { 
+            aux = a[i]; a[i] = a[j]; a[j] = aux; 
+            i++;  j--; 
+        }
+         
+    }while( i <= j ); 
+ 
+    if( izq < j ) 
+        quickSort( a, izq, j ); 
+    if( i < der ) 
+        quickSort( a, i, der ); 
+	
+	
 }
 
-void Mergesort(int a[],int f,int l){
-	int mid=0;
-	if (f<l){
-		mid=(f+l)/2;
-		Mergesort(a,f,mid);
-		Mergesort(a,mid+1,l);
-		Mergelist(a,f,mid,mid+1,l);
-	}
-}
-
-
-
-void iniciarDesordenado(){
+void inicioEnDesorden(){
 	int n=5;
 	int i;
 	int aux=0;
@@ -73,7 +60,7 @@ void iniciarDesordenado(){
 			aux--;
 		}
 		QueryPerformanceCounter(&t_ini);
-		Mergesort(a,0,n-1);
+		quickSort(a,0,n-1);
 		QueryPerformanceCounter(&t_fin);
 		secs = diferenciaDeContadorDeRendimiento(&t_fin, &t_ini);
 		char buffer[20];
@@ -87,6 +74,6 @@ void iniciarDesordenado(){
 }
 
 int main(){
-	iniciarDesordenado();
+	inicioEnDesorden();
 	return 0;
 }
