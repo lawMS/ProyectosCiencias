@@ -1,2 +1,2 @@
 # ProyectosCiencias
-Analisis de algoritmos de ordenamiento
+Repositorio con los trabajos de la materia Ciencias I
